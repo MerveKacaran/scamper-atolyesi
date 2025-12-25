@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>SCAMPER Atölyesi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap");
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    /* Giriş ekranı */
+    #setup-screen {
+      background: #ffffff;
+      padding: 30px 35px;
+      border-radius: 18px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+    }
+
+    #setup-screen h1 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    #setup-screen p {
+      margin-top: 0;
+      margin-bottom: 20px;
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+      color: #444;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #d0d7de;
+      font-size: 0.95rem;
+    }
+
+    button {
+      background: linear-gradient(135deg, #ff6b6b, #ee5253);
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      font-size: 1rem;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 8px 18px rgba(238, 82, 83, 0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 11px 24px rgba(238, 82, 83, 0.45);
+    }
+
+    button:active {
+      transform: translateY(1px);
+      box-shadow: 0 5px 10px rgba(238, 82, 83, 0.35);
+    }
+
+    .small-button {
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      border-radius: 18px;
+    }
+
+    /* SCAMPER ekranı */
+    #scamper-screen {
+      display: none;
+      width: 95%;
+      max-width: 1150px;
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+      padding: 20px 22px;
+      margin: 20px auto;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .workshop-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #2c3e50;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .workshop-sub {
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .group-chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .group-chip {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #f4f6fb;
+      border: 1px solid #d0d7de;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .group-chip span.badge {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: #ffffff;
+    }
+
+    .badge-1 {
+      background: #ff6b6b;
+    }
+
+    .badge-2 {
+      background: #3498db;
+    }
+
+    .problem-box {
+      margin-top: 6px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #f9fafc;
+      border: 1px dashed #c0c8d0;
+      font-size: 0.9rem;
+    }
+
+    .problem-box label {
+      font-weight: 600;
+      color: #444;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .problem-box textarea {
+      width: 100%;
+      min-height: 50px;
+      resize: vertical;
+      border-radius: 8px;
+      border: 1px solid #d0d7de;
+      padding: 6px 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+    }
+
+    /* SCAMPER nav */
+    .scamper-nav {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .scamper-btn {
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      background: #f5f7fb;
+      border: 1px solid #d0d7de;
+      color: #333;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, transform 0.1s;
+    }
+
+    .scamper-btn span.letter {
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+
+    .scamper-btn.active {
+      background: #ff6b6b;
+      color: #ffffff;
+      border-color: #ff6b6b;
+      box-shadow: 0 7px 16px rgba(238, 82, 83, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .scamper-btn.active .letter {
+      color: #ffffff;
+    }
+
+    /* İçerik alanı */
+    .content-row {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 4fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .content-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .step-card {
+      border-radius: 14px;
+      border: 1px solid #d0d7de;
+      background: #f9fafc;
+      padding: 12px 14px;
+    }
+
+    .step-badge {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #ff6b6b;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .step-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .step-question {
+      font-size: 0.9rem;
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    .step-example {
+      font-size: 0.85rem;
+      color: #666;
+      font-style: italic;
+      background: #eef2ff;
+      border-radius: 8px;
+      padding: 6px 8px;
+    }
+
+    .ideas-card {
+      border-radius: 14px;
+      border: 1px solid #d0d7de;
+      background: #ffffff;
+      padding: 12px 14px;
+    }
+
+    .ideas-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ideas-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 800px) {
+      .ideas-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .idea-block {
+      border-radius: 10px;
+      border: 1px solid #e1e4ea;
+      background: #f9fafc;
+      padding: 8px 8px;
+    }
+
+    .idea-block h4 {
+      margin: 0 0 4px 0;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .idea-block textarea {
+      width: 100%;
+      min-height: 70px;
+      resize: vertical;
+      border-radius: 8px;
+      border: 1px solid #cfd4dc;
+      padding: 6px 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      background: #ffffff;
+    }
+
+    .footer-row {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    .step-info {
+      font-size: 0.85rem;
+      color: #555;
+    }
+
+    .step-info strong {
+      color: #2c3e50;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- GİRİŞ EKRANI -->
+  <div id="setup-screen">
+    <h1>🧠✨ SCAMPER Atölyesi</h1>
+    <p>Grup adlarını girin, ardından SCAMPER adımlarını birlikte doldurun.</p>
+
+    <div class="input-group">
+      <label for="workshop-name">Atölye / Sınıf Adı</label>
+      <input id="workshop-name" type="text" placeholder="Örn: 9A - Doğa Dedektifleri" />
+    </div>
+
+    <div class="input-group">
+      <label for="group1-name">1. Grup Adı</label>
+      <input id="group1-name" type="text" placeholder="Örn: Grup Lotus" />
+    </div>
+
+    <div class="input-group">
+      <label for="group2-name">2. Grup Adı</label>
+      <input id="group2-name" type="text" placeholder="Örn: Grup Midye" />
+    </div>
+
+    <button onclick="startWorkshop()">Atölyeye Başla 🚀</button>
+  </div>
+
+  <!-- SCAMPER EKRANI -->
+  <div id="scamper-screen">
+    <div class="header-row">
+      <div>
+        <div class="workshop-title">
+          🧠 SCAMPER & Biyotaklit
+          <span class="workshop-sub" id="workshop-name-display"></span>
+        </div>
+        <div class="problem-box">
+          <label for="problem-text">Çalışılan sorun / problem:</label>
+          <textarea
+            id="problem-text"
+            placeholder="Örn: Okulda su tasarrufunu artırmak için nasıl bir çözüm tasarlayabiliriz?"
+          ></textarea>
+        </div>
+      </div>
+      <div class="group-chips">
+        <div class="group-chip">
+          <span class="badge badge-1">1</span>
+          <span id="chip-group1">1. Grup</span>
+        </div>
+        <div class="group-chip">
+          <span class="badge badge-2">2</span>
+          <span id="chip-group2">2. Grup</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCAMPER NAV -->
+    <div class="scamper-nav" id="scamper-nav">
+      <!-- JS ile doldurulacak -->
+    </div>
+
+    <!-- İçerik -->
+    <div class="content-row">
+      <div class="step-card" id="step-card">
+        <!-- Adım detayları JS ile -->
+      </div>
+      <div class="ideas-card">
+        <div class="ideas-title">
+          💡 Grup Fikirleri
+        </div>
+        <div class="ideas-grid">
+          <div class="idea-block">
+            <h4><span class="badge badge-1">1</span><span id="ideas-g1-label">1. Grup</span></h4>
+            <textarea id="idea-g1"></textarea>
+          </div>
+          <div class="idea-block">
+            <h4><span class="badge badge-2">2</span><span id="ideas-g2-label">2. Grup</span></h4>
+            <textarea id="idea-g2"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-row">
+      <div class="step-info" id="step-info"></div>
+      <div>
+        <button class="small-button" onclick="previousStep()">Önceki Adım</button>
+        <button class="small-button" onclick="nextStep()">Sonraki Adım</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // SCAMPER adımları
+    const scamperSteps = [
+      {
+        id: "S",
+        name: "Substitute (Yerine koy)",
+        emoji: "🔄",
+        question: "Hangi bileşeni doğadaki başka bir örnekle değiştirebiliriz?",
+        example: "Plastikleri mantar malzemeyle değiştirmek"
+      },
+      {
+        id: "C",
+        name: "Combine (Birleştir)",
+        emoji: "🧩",
+        question: "İki doğal mekanizmayı nasıl birleştirebiliriz?",
+        example: "Arı peteği + lotus yaprağı yüzeyi"
+      },
+      {
+        id: "A",
+        name: "Adapt (Uyarlamak)",
+        emoji: "🦎",
+        question: "Doğadaki çözüm nasıl uyarlanabilir?",
+        example: "Bukalemun derisi – renk değiştiren çadır kumaşı"
+      },
+      {
+        id: "M",
+        name: "Modify (Değiştir)",
+        emoji: "✂️",
+        question: "Boyut, şekil veya renk değiştirilebilir mi?",
+        example: "Damlacık yapısı → su toplama yüzeyi"
+      },
+      {
+        id: "P",
+        name: "Put to another use (Yeni işlev)",
+        emoji: "🔧",
+        question: "Doğadaki bir çözümü farklı alanda nasıl kullanabiliriz?",
+        example: "Karınca tünelleri → doğal havalandırma sistemi"
+      },
+      {
+        id: "E",
+        name: "Eliminate (Çıkarmak)",
+        emoji: "🗑️",
+        question: "Gereksiz unsurları ortadan kaldırabilir miyiz?",
+        example: "Ambalajsız, yeniden doldurulabilir tasarımlar"
+      },
+      {
+        id: "R",
+        name: "Reverse (Tersine çevir)",
+        emoji: "🔁",
+        question: "Süreç tersine çevrilirse ne olur?",
+        example: "Atık → kaynak prensibi (döngüsel ekonomi)"
+      }
+    ];
+
+    let currentStepIndex = 0;
+
+    // Her adım + grup için fikirleri hafızada tutalım
+    const ideas = {};
+    scamperSteps.forEach(step => {
+      ideas[step.id] = {
+        g1: "",
+        g2: ""
+      };
+    });
+
+    function startWorkshop() {
+      const workshopName = document.getElementById("workshop-name").value.trim();
+      const group1Name = document.getElementById("group1-name").value.trim() || "1. Grup";
+      const group2Name = document.getElementById("group2-name").value.trim() || "2. Grup";
+
+      // Başlık ve grup etiketlerini doldur
+      document.getElementById("workshop-name-display").textContent =
+        workshopName ? "– " + workshopName : "";
+
+      document.getElementById("chip-group1").textContent = group1Name;
+      document.getElementById("chip-group2").textContent = group2Name;
+      document.getElementById("ideas-g1-label").textContent = group1Name;
+      document.getElementById("ideas-g2-label").textContent = group2Name;
+
+      // Giriş ekranını gizle, SCAMPER ekranını göster
+      document.getElementById("setup-screen").style.display = "none";
+      document.getElementById("scamper-screen").style.display = "flex";
+
+      // SCAMPER nav ve ilk adımı çiz
+      renderScamperNav();
+      renderCurrentStep();
+    }
+
+    function renderScamperNav() {
+      const navContainer = document.getElementById("scamper-nav");
+      navContainer.innerHTML = "";
+
+      scamperSteps.forEach((step, index) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "scamper-btn" + (index === currentStepIndex ? " active" : "");
+        btn.innerHTML = `
+          <span class="letter">${step.id}</span>
+          <span>${step.emoji}</span>
+        `;
+        btn.addEventListener("click", () => {
+          saveCurrentIdeas();
+          currentStepIndex = index;
+          renderScamperNav();
+          renderCurrentStep();
+        });
+        navContainer.appendChild(btn);
+      });
+    }
+
+    function renderCurrentStep() {
+      const step = scamperSteps[currentStepIndex];
+      const stepCard = document.getElementById("step-card");
+
+      stepCard.innerHTML = `
+        <div class="step-badge">
+          ${step.emoji} SCAMPER – ${step.id}
+        </div>
+        <div class="step-title">
+          ${step.name}
+        </div>
+        <div class="step-question">
+          <strong>Rehber Soru:</strong> ${step.question}
+        </div>
+        <div class="step-example">
+          <strong>Örnek Uygulama:</strong> ${step.example}
+        </div>
+      `;
+
+      // Seçili adım için daha önce yazılmış fikirleri textarealara geri koy
+      const stepIdeas = ideas[step.id];
+      document.getElementById("idea-g1").value = stepIdeas.g1;
+      document.getElementById("idea-g2").value = stepIdeas.g2;
+
+      // Alt bilgi
+      const stepInfo = document.getElementById("step-info");
+      stepInfo.innerHTML = `
+        Adım <strong>${currentStepIndex + 1} / ${scamperSteps.length}</strong> – 
+        Şu an <strong>${step.id}</strong> aşamasındasınız.
+      `;
+    }
+
+    function saveCurrentIdeas() {
+      const step = scamperSteps[currentStepIndex];
+      ideas[step.id].g1 = document.getElementById("idea-g1").value;
+      ideas[step.id].g2 = document.getElementById("idea-g2").value;
+    }
+
+    function nextStep() {
+      if (currentStepIndex < scamperSteps.length - 1) {
+        saveCurrentIdeas();
+        currentStepIndex++;
+        renderScamperNav();
+        renderCurrentStep();
+      }
+    }
+
+    function previousStep() {
+      if (currentStepIndex > 0) {
+        saveCurrentIdeas();
+        currentStepIndex--;
+        renderScamperNav();
+        renderCurrentStep();
+      }
+    }
+  </script>
+</body>
+</html>
